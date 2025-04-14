@@ -2,9 +2,11 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const App = () => {
   const [spaces, setSpaces] = useState<string[]>(Array(9).fill("*"));
   const [gameOver, setGameOver] = useState(false);
+  const sound = new Audio("/APPLAUSE_SOUND.mp3")
 
   const combinates = [
     [0, 1, 2],
@@ -34,12 +36,14 @@ const App = () => {
 
     if (check(newArr, "O")) {
       if ("vibrate" in navigator) navigator.vibrate(7000);
-      toast.error("Siz yutqazdingiz! O yutdi!", { autoClose: 3000 });
+      toast.error("Keyingi safar yaxshiroq harakat qiling ✌️", {
+        autoClose: 3000,
+      });
       setGameOver(true);
       setTimeout(restart, 3000);
     } else if (!newArr.includes("*")) {
       if ("vibrate" in navigator) navigator.vibrate(200);
-      toast.info("Durrang!", { autoClose: 2000 });
+      toast.info("Yaxshiroq harakat qiling 😊", { autoClose: 3000 });
       setGameOver(true);
       setTimeout(restart, 2000);
     }
@@ -83,7 +87,8 @@ const App = () => {
     setSpaces(updated);
 
     if (check(updated, "X")) {
-      toast.success("X yutdi! Siz g'olib bo'ldingiz!", { autoClose: 2000 });
+      sound.play();
+      toast.success("Qoyilmaqom! Siz eng zo'risiz 😎!", { autoClose: 2500 });
       setGameOver(true);
       setTimeout(restart, 2000);
       return;
