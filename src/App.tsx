@@ -33,12 +33,12 @@ const App = () => {
     setSpaces(newArr);
 
     if (check(newArr, "O")) {
-      if ("vibrate" in navigator) navigator.vibrate(400); // <-- Vibratsiya
+      if ("vibrate" in navigator) navigator.vibrate(700);
       toast.error("Siz yutqazdingiz! O yutdi!", { autoClose: 3000 });
       setGameOver(true);
       setTimeout(restart, 3000);
     } else if (!newArr.includes("*")) {
-      if ("vibrate" in navigator) navigator.vibrate(200); // <-- Durrangda vibratsiya
+      if ("vibrate" in navigator) navigator.vibrate(200);
       toast.info("Durrang!", { autoClose: 2000 });
       setGameOver(true);
       setTimeout(restart, 2000);
@@ -90,7 +90,7 @@ const App = () => {
     }
 
     if (!updated.includes("*")) {
-      if ("vibrate" in navigator) navigator.vibrate(200); // <-- Durrangda vibratsiya
+      if ("vibrate" in navigator) navigator.vibrate(200);
       toast.info("Durrang!", { autoClose: 2000 });
       setGameOver(true);
       setTimeout(restart, 2000);
