@@ -33,7 +33,7 @@ const App = () => {
     setSpaces(newArr);
 
     if (check(newArr, "O")) {
-      if ("vibrate" in navigator) navigator.vibrate(700);
+      if ("vibrate" in navigator) navigator.vibrate(7000);
       toast.error("Siz yutqazdingiz! O yutdi!", { autoClose: 3000 });
       setGameOver(true);
       setTimeout(restart, 3000);
