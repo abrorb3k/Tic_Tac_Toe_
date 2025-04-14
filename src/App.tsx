@@ -2,11 +2,16 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const App = () => {
   const [spaces, setSpaces] = useState<string[]>(Array(9).fill("*"));
   const [gameOver, setGameOver] = useState(false);
-  const sound = new Audio("/APPLAUSE_SOUND.mp3")
+
+  const sound = new Audio("/Winning_voice.mp3"); 
+  const Draww = new Audio("/Draw_voice.mp3"); 
+  const Defeat = new Audio("/Defeat_voice.mp3");
+
+  const [winsX, setWinsX] = useState(0);
+  const [winsO, setWinsO] = useState(0);
 
   const combinates = [
     [0, 1, 2],
@@ -35,7 +40,9 @@ const App = () => {
     setSpaces(newArr);
 
     if (check(newArr, "O")) {
-      if ("vibrate" in navigator) navigator.vibrate(7000);
+      if ("vibrate" in navigator) navigator.vibrate(3000); 
+      Defeat.play();
+      setWinsO(winsO + 1); 
       toast.error("Keyingi safar yaxshiroq harakat qiling ✌️", {
         autoClose: 3000,
       });
@@ -43,6 +50,7 @@ const App = () => {
       setTimeout(restart, 3000);
     } else if (!newArr.includes("*")) {
       if ("vibrate" in navigator) navigator.vibrate(200);
+      Draww.play(); // Durrang paytda ovoz
       toast.info("Yaxshiroq harakat qiling 😊", { autoClose: 3000 });
       setGameOver(true);
       setTimeout(restart, 2000);
@@ -87,7 +95,8 @@ const App = () => {
     setSpaces(updated);
 
     if (check(updated, "X")) {
-      sound.play();
+      sound.play(); 
+      setWinsX(winsX + 1); 
       toast.success("Qoyilmaqom! Siz eng zo'risiz 😎!", { autoClose: 2500 });
       setGameOver(true);
       setTimeout(restart, 2000);
@@ -96,6 +105,7 @@ const App = () => {
 
     if (!updated.includes("*")) {
       if ("vibrate" in navigator) navigator.vibrate(200);
+      Draww.play();
       toast.info("Durrang!", { autoClose: 2000 });
       setGameOver(true);
       setTimeout(restart, 2000);
@@ -112,6 +122,11 @@ const App = () => {
           Tic Tac Toe
         </h1>
 
+        <div className="mb-4 text-lg flex gap-7">
+          <p className="text-green-500 text-3xl font-bold">X: {winsX}</p>
+          <p className="text-red-500 text-3xl font-bold">O: {winsO}</p>
+        </div>
+
         <div className="w-full max-w-[400px] grid grid-cols-3 border rounded overflow-hidden shadow-lg">
           {spaces.map((s, i) => (
             <div
@@ -120,9 +135,9 @@ const App = () => {
               className={`flex items-center justify-center text-[3rem] sm:text-[4rem] aspect-square border cursor-pointer transition-all duration-300
               ${
                 s === "X"
-                  ? "text-green-500"
+                  ? "text-green-500 font-bold"
                   : s === "O"
-                  ? "text-red-500"
+                  ? "text-red-500 font-bold"
                   : "text-gray-400"
               }
               hover:bg-gray-800`}
@@ -146,3 +161,11 @@ const App = () => {
 };
 
 export default App;
+
+
+
+
+
+
+
+
