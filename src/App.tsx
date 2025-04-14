@@ -40,7 +40,7 @@ const App = () => {
     setSpaces(newArr);
 
     if (check(newArr, "O")) {
-      if ("vibrate" in navigator) navigator.vibrate(3000); 
+      if ("vibrate" in navigator) navigator.vibrate(1000); 
       Defeat.play();
       setWinsO(winsO + 1); 
       toast.error("Keyingi safar yaxshiroq harakat qiling ✌️", {
