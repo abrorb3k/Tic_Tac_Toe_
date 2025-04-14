@@ -23,7 +23,9 @@ const App = () => {
   };
 
   const check = (arr: string[], player: string) => {
-    return combinates.some((c) => c.every((i) => arr[i] === player));
+    return combinates.some((combinat) =>
+      combinat.every((index) => arr[index] === player)
+    );
   };
 
   const makeMove = (index: number, currentArr: string[]) => {
@@ -31,10 +33,12 @@ const App = () => {
     setSpaces(newArr);
 
     if (check(newArr, "O")) {
+      if ("vibrate" in navigator) navigator.vibrate(400); // <-- Vibratsiya
       toast.error("Siz yutqazdingiz! O yutdi!", { autoClose: 3000 });
       setGameOver(true);
       setTimeout(restart, 3000);
     } else if (!newArr.includes("*")) {
+      if ("vibrate" in navigator) navigator.vibrate(200); // <-- Durrangda vibratsiya
       toast.info("Durrang!", { autoClose: 2000 });
       setGameOver(true);
       setTimeout(restart, 2000);
@@ -86,6 +90,7 @@ const App = () => {
     }
 
     if (!updated.includes("*")) {
+      if ("vibrate" in navigator) navigator.vibrate(200); // <-- Durrangda vibratsiya
       toast.info("Durrang!", { autoClose: 2000 });
       setGameOver(true);
       setTimeout(restart, 2000);
@@ -96,18 +101,18 @@ const App = () => {
   };
 
   return (
-    <div className="container bg-gray-950 min-h-screen px-4">
-      <div className="flex flex-col items-center justify-center py-10">
-        <h1 className="text-4xl md:text-5xl font-bold mb-10 text-amber-200 text-center">
+    <div className="container bg-gray-950 min-h-screen text-white">
+      <div className="flex flex-col items-center justify-center py-10 px-4">
+        <h1 className="text-4xl sm:text-5xl font-bold mb-10 text-amber-200 text-center">
           Tic Tac Toe
         </h1>
 
-        <div className="w-full max-w-sm sm:max-w-md md:max-w-lg grid grid-cols-3 border rounded overflow-hidden shadow-lg">
+        <div className="w-full max-w-[400px] grid grid-cols-3 border rounded overflow-hidden shadow-lg">
           {spaces.map((s, i) => (
             <div
               key={i}
               onClick={() => fill(i)}
-              className={`flex items-center justify-center text-4xl sm:text-5xl md:text-6xl aspect-square border cursor-pointer transition-all duration-300 
+              className={`flex items-center justify-center text-[3rem] sm:text-[4rem] aspect-square border cursor-pointer transition-all duration-300
               ${
                 s === "X"
                   ? "text-green-500"
