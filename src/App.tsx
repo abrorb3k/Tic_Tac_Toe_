@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import confetti from "canvas-confetti";
+import { FaGamepad } from "react-icons/fa";
+
 
 const App = () => {
   const [spaces, setSpaces] = useState<string[]>(Array(9).fill("*"));
@@ -12,6 +15,8 @@ const App = () => {
 
   const [winsX, setWinsX] = useState(0);
   const [winsO, setWinsO] = useState(0);
+  const [matchCount, setMatchCount] = useState(0);
+
 
   const combinates = [
     [0, 1, 2],
@@ -47,10 +52,11 @@ const App = () => {
         autoClose: 3000,
       });
       setGameOver(true);
+      setMatchCount((prev) => prev + 1);
       setTimeout(restart, 3000);
     } else if (!newArr.includes("*")) {
       if ("vibrate" in navigator) navigator.vibrate(200);
-      Draww.play(); // Durrang paytda ovoz
+      Draww.play();
       toast.info("Yaxshiroq harakat qiling 😊", { autoClose: 3000 });
       setGameOver(true);
       setTimeout(restart, 2000);
@@ -95,9 +101,15 @@ const App = () => {
     setSpaces(updated);
 
     if (check(updated, "X")) {
-      sound.play(); 
-      setWinsX(winsX + 1); 
+      sound.play();
+      setWinsX(winsX + 1);
+      confetti({
+        particleCount: 850,
+        spread:600,
+        origin: {},
+      });
       toast.success("Qoyilmaqom! Siz eng zo'risiz 😎!", { autoClose: 2500 });
+      setMatchCount((prev) => prev + 1);
       setGameOver(true);
       setTimeout(restart, 2000);
       return;
@@ -108,6 +120,7 @@ const App = () => {
       Draww.play();
       toast.info("Durrang!", { autoClose: 2000 });
       setGameOver(true);
+      setMatchCount((prev) => prev + 1);
       setTimeout(restart, 2000);
       return;
     }
@@ -116,7 +129,7 @@ const App = () => {
   };
 
   return (
-    <div className="container bg-gray-950 min-h-screen text-white">
+    <div className="container bg-gray-950 min-h-screen text-white p-5">
       <div className="flex flex-col items-center justify-center py-10 px-4">
         <h1 className="text-4xl sm:text-5xl font-bold mb-10 text-amber-200 text-center">
           Tic Tac Toe
@@ -125,6 +138,9 @@ const App = () => {
         <div className="mb-4 text-lg flex gap-7">
           <p className="text-green-500 text-3xl font-bold">X: {winsX}</p>
           <p className="text-red-500 text-3xl font-bold">O: {winsO}</p>
+          <p className="text-blue-400 text-3xl  font-bold flex items-center gap-2">
+            <FaGamepad className="text-yellow-400" />: {matchCount}
+          </p>
         </div>
 
         <div className="w-full max-w-[400px] grid grid-cols-3 border rounded overflow-hidden shadow-lg">
